@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PersonalCodeing.iml" filepath="$PROJECT_DIR$/PersonalCodeing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MancalaPython.iml" filepath="$PROJECT_DIR$/MancalaPython.iml" />
     </modules>
   </component>
 </project>
