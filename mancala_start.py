@@ -7,19 +7,34 @@ def button_press(button_id):
     global right_score
     global left_side
     global left_score
-    if whos_turn:
-        temp_holder = right_side[button_id - 1]
-        right_side[button_id - 1] = 0
-        for i in range(1, temp_holder+1):
-            drop_pocket = button_id-1
-            print("IT IS NUMBER {}".format(drop_pocket))
+    drop_side = whos_turn
+    drop_pocket = button_id - 1
 
+    if whos_turn:
+        side = right_side
     else:
-        temp_holder = left_side[button_id - 1]
-        left_side[button_id - 1] = 0
-        for i in range(1, temp_holder+1):
-            drop_pocket = button_id-1
-            print("IT IS NUMBER {}".format(drop_pocket))
+        side = left_side
+
+    temp_holder = side[button_id - 1]
+    side[button_id - 1] = 0
+    for i in range(temp_holder):
+        print(" front drop pocket is {} and side is {}".format(drop_pocket, drop_side))
+        drop_pocket -= 1
+        if drop_pocket < 0:
+            if drop_side:
+                right_score += 1
+                print("Right score!")
+                drop_side = False
+                side = left_side
+            else:
+                left_score += 1
+                print("Left score!")
+                drop_side = True
+                side = right_side
+            drop_pocket = 6
+        else:
+            print("back drop pocket is {} and side is {}".format(drop_pocket, drop_side))
+            side[drop_pocket] += 1
 
     print(temp_holder)
     swap_turn()
@@ -51,6 +66,13 @@ def draw_buttons():
     button_right5['text']=right_side[4]
     button_right6.grid(row=7, column=3, sticky="nsew")
     button_right6['text']=right_side[5]
+
+    right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg='light pink')
+    right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
+
+    left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg='light blue')
+    left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
+
     play_screen.mainloop()
 
 
@@ -86,9 +108,9 @@ def swap_turn():
         whos_turn = True
 
 
-right_side = [1, 2, 3, 4, 5, 6]
+right_side = [1, 4, 4, 4, 4, 4]
 right_score = 0
-left_side = [11, 12, 13, 14, 15, 16]
+left_side = [1, 4, 4, 4, 4, 1]
 left_score = 0
 whos_turn = True    # True means its left side / blues turn
 
