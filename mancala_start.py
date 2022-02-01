@@ -18,25 +18,31 @@ def button_press(button_id):
     temp_holder = side[button_id - 1]
     side[button_id - 1] = 0
     for i in range(temp_holder):
-        print(" front drop pocket is {} and side is {}".format(drop_pocket, drop_side))
         drop_pocket -= 1
-        if drop_pocket < 0:
-            if drop_side:
-                right_score += 1
-                print("Right score!")
-                drop_side = False
-                side = left_side
-            else:
-                left_score += 1
-                print("Left score!")
-                drop_side = True
+        if drop_pocket < 0:  # Triggered when drop_pocket is less than 0 so is a score space
+            drop_pocket = 5
+            drop_side = not drop_side
+            if side == left_side:
                 side = right_side
-            drop_pocket = 6
+            else:
+                side = left_side
+            if drop_side != whos_turn:  # Triggered when current players bean hits score (prevents scoring for other player)
+                if whos_turn:
+                    right_score += 1
+                else:
+                    left_score += 1
+                print("Score!")
+
+                drop_pocket = 6
+            else:
+                side[drop_pocket] += 1
+            # now check if last bean ended in score pocket
+            if i == temp_holder - 1:
+                print("another go?")
+                swap_turn()
         else:
-            print("back drop pocket is {} and side is {}".format(drop_pocket, drop_side))
             side[drop_pocket] += 1
 
-    print(temp_holder)
     swap_turn()
     draw_buttons()
 
@@ -108,9 +114,9 @@ def swap_turn():
         whos_turn = True
 
 
-right_side = [1, 4, 4, 4, 4, 4]
+right_side = [4, 4, 4, 4, 4, 4]  # pink
 right_score = 0
-left_side = [1, 4, 4, 4, 4, 1]
+left_side = [4, 4, 11, 9, 4, 4]  # blue
 left_score = 0
 whos_turn = True    # True means its left side / blues turn
 
