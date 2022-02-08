@@ -1,5 +1,25 @@
 import tkinter
 
+def check_end(right, left):
+    counter = 0
+    end_game = False
+    for i in right:
+        counter += i
+    if counter == 0:
+        end_game = True
+    counter = 0
+    for i in left:
+        counter += i
+    if counter == 0:
+        end_game = True
+    return end_game
+
+
+def disabler(bean_count, turn):
+    if bean_count == 0 or turn:
+        return "disabled"
+    else:
+        return "active"
 
 def button_press(button_id):
     global whos_turn
@@ -37,9 +57,11 @@ def button_press(button_id):
             else:
                 side[drop_pocket] += 1
             # now check if last bean ended in score pocket
-            if i == temp_holder - 1:
+            if i == temp_holder - 1 and drop_side != whos_turn:
                 print("another go?")
                 swap_turn()
+                if check_end(right_side, left_side):
+                    print("THE END") # add game end code in relation to this
         else:
             side[drop_pocket] += 1
 
@@ -50,28 +72,40 @@ def button_press(button_id):
 def draw_buttons():
     button_left6.grid(row=7, column=1, sticky="nsew")
     button_left6['text']=left_side[0]
+    button_left6['state']= disabler(left_side[0], whos_turn)
     button_left5.grid(row=6, column=1, sticky="nsew")
     button_left5['text']=left_side[1]
+    button_left5['state']= disabler(left_side[1], whos_turn)
     button_left4.grid(row=5, column=1, sticky="nsew")
     button_left4['text']=left_side[2]
+    button_left4['state']= disabler(left_side[2], whos_turn)
     button_left3.grid(row=4, column=1, sticky="nsew")
     button_left3['text']=left_side[3]
+    button_left3['state']= disabler(left_side[3], whos_turn)
     button_left2.grid(row=3, column=1, sticky="nsew")
     button_left2['text']=left_side[4]
+    button_left2['state']= disabler(left_side[4], whos_turn)
     button_left1.grid(row=2, column=1, sticky="nsew")
     button_left1['text']=left_side[5]
+    button_left1['state']= disabler(left_side[5], whos_turn)
     button_right1.grid(row=2, column=3, sticky="nsew")
     button_right1['text']=right_side[0]
+    button_right1['state']= disabler(right_side[0], not whos_turn)
     button_right2.grid(row=3, column=3, sticky="nsew")
     button_right2['text']=right_side[1]
+    button_right2['state']= disabler(right_side[1], not whos_turn)
     button_right3.grid(row=4, column=3, sticky="nsew")
     button_right3['text']=right_side[2]
+    button_right3['state']= disabler(right_side[2], not whos_turn)
     button_right4.grid(row=5, column=3, sticky="nsew")
     button_right4['text']=right_side[3]
+    button_right4['state']= disabler(right_side[3], not whos_turn)
     button_right5.grid(row=6, column=3, sticky="nsew")
     button_right5['text']=right_side[4]
+    button_right5['state']= disabler(right_side[4], not whos_turn)
     button_right6.grid(row=7, column=3, sticky="nsew")
     button_right6['text']=right_side[5]
+    button_right6['state']= disabler(right_side[5], not whos_turn)
 
     right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg='light pink')
     right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
@@ -85,38 +119,14 @@ def draw_buttons():
 def swap_turn():
     global whos_turn
     if whos_turn:
-        button_right1["state"] = "disabled"
-        button_right2["state"] = "disabled"
-        button_right3["state"] = "disabled"
-        button_right4["state"] = "disabled"
-        button_right5["state"] = "disabled"
-        button_right6["state"] = "disabled"
-        button_left1["state"] = "active"
-        button_left2["state"] = "active"
-        button_left3["state"] = "active"
-        button_left4["state"] = "active"
-        button_left5["state"] = "active"
-        button_left6["state"] = "active"
         whos_turn = False
     else:
-        button_left1["state"] = "disabled"
-        button_left2["state"] = "disabled"
-        button_left3["state"] = "disabled"
-        button_left4["state"] = "disabled"
-        button_left5["state"] = "disabled"
-        button_left6["state"] = "disabled"
-        button_right1["state"] = "active"
-        button_right2["state"] = "active"
-        button_right3["state"] = "active"
-        button_right4["state"] = "active"
-        button_right5["state"] = "active"
-        button_right6["state"] = "active"
         whos_turn = True
 
 
 right_side = [4, 4, 4, 4, 4, 4]  # pink
 right_score = 0
-left_side = [4, 4, 11, 9, 4, 4]  # blue
+left_side = [4, 4, 4, 4, 4, 4]  # blue
 left_score = 0
 whos_turn = True    # True means its left side / blues turn
 
