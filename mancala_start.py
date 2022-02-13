@@ -1,18 +1,29 @@
 import tkinter
 
+
+def capture_pocket(side, drop_pocket):
+    print(side, drop_pocket)
+
+
+def zero_buttons(side):
+    for i in range(len(side)):
+        side[i] = 0
+    return side
+
+
 def check_end(right, left):
-    counter = 0
+    right_counter = 0
+    left_counter = 0
     end_game = False
     for i in right:
-        counter += i
-    if counter == 0:
+        right_counter += i
+    if right_counter == 0:
         end_game = True
-    counter = 0
     for i in left:
-        counter += i
-    if counter == 0:
+        left_counter += i
+    if left_counter == 0:
         end_game = True
-    return end_game
+    return end_game, right_counter, left_counter
 
 
 def disabler(bean_count, turn):
@@ -21,12 +32,14 @@ def disabler(bean_count, turn):
     else:
         return "active"
 
+
 def button_press(button_id):
     global whos_turn
     global right_side
     global right_score
     global left_side
     global left_score
+    global result
     drop_side = whos_turn
     drop_pocket = button_id - 1
 
@@ -59,11 +72,29 @@ def button_press(button_id):
             # now check if last bean ended in score pocket
             if i == temp_holder - 1 and drop_side != whos_turn:
                 print("another go?")
+
                 swap_turn()
-                if check_end(right_side, left_side):
-                    print("THE END") # add game end code in relation to this
+
         else:
+            if i == temp_holder - 1 and side[drop_pocket] == 0:
+                print("Is it working?")
+                capture_pocket(whos_turn, drop_pocket)
             side[drop_pocket] += 1
+
+    (end_it, right_add, left_add) = check_end(right_side, left_side)
+    if end_it:
+        print("THE END")  # add game end code in relation to this
+        right_score += right_add
+        left_score += left_add
+        right_side = zero_buttons(right_side)
+        left_side = zero_buttons(left_side)
+        if right_score == left_score:
+            result = "Draw!"
+        elif right_score > left_score:
+             result = "Red\nWins!"
+        else:
+            result = "Blue\nWins"
+
 
     swap_turn()
     draw_buttons()
@@ -113,6 +144,9 @@ def draw_buttons():
     left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg='light blue')
     left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
 
+    winner_label = tkinter.Label(play_screen, text="{}".format(result))
+    winner_label .grid(row=3, column=2, rowspan=4, sticky="ns")
+
     play_screen.mainloop()
 
 
@@ -123,10 +157,10 @@ def swap_turn():
     else:
         whos_turn = True
 
-
-right_side = [4, 4, 4, 4, 4, 4]  # pink
+result = " "
+right_side = [1, 1, 2, 2, 2, 2]  # pink
 right_score = 0
-left_side = [4, 4, 4, 4, 4, 4]  # blue
+left_side = [1, 1, 2, 2, 1, 1]  # blue
 left_score = 0
 whos_turn = True    # True means its left side / blues turn
 
@@ -155,7 +189,6 @@ play_screen.rowconfigure(10, weight=1)
 
 padding_frame = tkinter.Frame(play_screen)
 padding_frame.grid(row=0, column=0)
-
 
 right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg='light pink')
 right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
