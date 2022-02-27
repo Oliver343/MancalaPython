@@ -2,8 +2,34 @@ import tkinter
 
 
 def capture_pocket(side, drop_pocket):
+    global right_side
+    global left_side
+    global right_score
+    global left_score
     print(side, drop_pocket)
-
+    comparison_chart = [(0, 5),
+                        (1, 4),
+                        (2, 3),
+                        (3, 2),
+                        (4, 1),
+                        (5, 0)]  # This chart is used to work out the other sides button ready to capture the contents if any
+    for check in range(len(comparison_chart)-1):
+        if comparison_chart[check][0] == drop_pocket:
+            working_pocket = comparison_chart[check][1]
+            print("Working pocket is {}".format(working_pocket))
+            print(side)
+            if not side:
+                if right_side[working_pocket] != 0:
+                    print("CAPTUER")
+                    left_score += (right_side[working_pocket] + 1) # The +1 is the bean that would end in the pocket being captured also.
+                    right_side[working_pocket] = 0
+                    left_side[drop_pocket] = -1 # -1 here as it will add the final bean later in the code and needs to be zero.
+            else:
+                if left_side[working_pocket] != 0:
+                    print("CAPTURE2")
+                    right_score += (left_side[working_pocket] + 1)
+                    left_side[working_pocket] = 0
+                    right_side[drop_pocket] = -1
 
 def zero_buttons(side):
     for i in range(len(side)):
@@ -76,8 +102,7 @@ def button_press(button_id):
                 swap_turn()
 
         else:
-            if i == temp_holder - 1 and side[drop_pocket] == 0:
-                print("Is it working?")
+            if i == temp_holder - 1 and side[drop_pocket] == 0:  # This part checks if the last slot is empty making a capture possible
                 capture_pocket(whos_turn, drop_pocket)
             side[drop_pocket] += 1
 
