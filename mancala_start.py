@@ -1,7 +1,10 @@
 import tkinter
+import json
 
 
-def capture_pocket(side, drop_pocket):
+def capture_pocket(side: bool, drop_pocket: int) -> None:
+    """ Used when capture occurs. Checks other pocket is not zero then
+    adds both pocket and opposite side to current players score, setting pockets to zero. """
     global right_side
     global left_side
     global right_score
@@ -31,13 +34,16 @@ def capture_pocket(side, drop_pocket):
                     left_side[working_pocket] = 0
                     right_side[drop_pocket] = -1
 
-def zero_buttons(side):
+
+def zero_buttons(side: list) -> list:
+    """ Sets all values in `side` to zero. """
     for i in range(len(side)):
         side[i] = 0
     return side
 
 
-def check_end(right, left):
+def check_end(right: list, left: list) -> (bool, int, int):
+    """ Checks if one sides pockets (buttons) are empty and if so ends the game. """
     right_counter = 0
     left_counter = 0
     end_game = False
@@ -52,14 +58,18 @@ def check_end(right, left):
     return end_game, right_counter, left_counter
 
 
-def disabler(bean_count, turn):
+def disabler(bean_count: int, turn: bool) -> str:
+    """ Identifies if a button needs to be active or disabled and returns relevant string. """
     if bean_count == 0 or turn:
         return "disabled"
     else:
         return "active"
 
 
-def button_press(button_id):
+def button_press(button_id: int) -> None:
+    """ Actions when button is pressed. Picks up all beans from a pocket (number displayed on button)
+     then uses that number to count add one to each pocket in a clockwise direction.
+     Also identifies if a second turn is granted and if a capture can take place. """
     global whos_turn
     global right_side
     global right_score
@@ -116,57 +126,57 @@ def button_press(button_id):
         if right_score == left_score:
             result = "Draw!"
         elif right_score > left_score:
-             result = "Red\nWins!"
+            result = "Red\nWins!"
         else:
             result = "Blue\nWins"
-
 
     swap_turn()
     draw_buttons()
 
 
-def draw_buttons():
+def draw_buttons() -> None:
+    """ Redraws the buttons and scores on the UI. """
     button_left6.grid(row=7, column=1, sticky="nsew")
-    button_left6['text']=left_side[0]
-    button_left6['state']= disabler(left_side[0], whos_turn)
+    button_left6['text'] = left_side[0]
+    button_left6['state'] = disabler(left_side[0], whos_turn)
     button_left5.grid(row=6, column=1, sticky="nsew")
-    button_left5['text']=left_side[1]
-    button_left5['state']= disabler(left_side[1], whos_turn)
+    button_left5['text'] = left_side[1]
+    button_left5['state'] = disabler(left_side[1], whos_turn)
     button_left4.grid(row=5, column=1, sticky="nsew")
-    button_left4['text']=left_side[2]
-    button_left4['state']= disabler(left_side[2], whos_turn)
+    button_left4['text'] = left_side[2]
+    button_left4['state'] = disabler(left_side[2], whos_turn)
     button_left3.grid(row=4, column=1, sticky="nsew")
-    button_left3['text']=left_side[3]
-    button_left3['state']= disabler(left_side[3], whos_turn)
+    button_left3['text'] = left_side[3]
+    button_left3['state'] = disabler(left_side[3], whos_turn)
     button_left2.grid(row=3, column=1, sticky="nsew")
-    button_left2['text']=left_side[4]
-    button_left2['state']= disabler(left_side[4], whos_turn)
+    button_left2['text'] = left_side[4]
+    button_left2['state'] = disabler(left_side[4], whos_turn)
     button_left1.grid(row=2, column=1, sticky="nsew")
-    button_left1['text']=left_side[5]
-    button_left1['state']= disabler(left_side[5], whos_turn)
+    button_left1['text'] = left_side[5]
+    button_left1['state'] = disabler(left_side[5], whos_turn)
     button_right1.grid(row=2, column=3, sticky="nsew")
-    button_right1['text']=right_side[0]
-    button_right1['state']= disabler(right_side[0], not whos_turn)
+    button_right1['text'] = right_side[0]
+    button_right1['state'] = disabler(right_side[0], not whos_turn)
     button_right2.grid(row=3, column=3, sticky="nsew")
-    button_right2['text']=right_side[1]
-    button_right2['state']= disabler(right_side[1], not whos_turn)
+    button_right2['text'] = right_side[1]
+    button_right2['state'] = disabler(right_side[1], not whos_turn)
     button_right3.grid(row=4, column=3, sticky="nsew")
-    button_right3['text']=right_side[2]
-    button_right3['state']= disabler(right_side[2], not whos_turn)
+    button_right3['text'] = right_side[2]
+    button_right3['state'] = disabler(right_side[2], not whos_turn)
     button_right4.grid(row=5, column=3, sticky="nsew")
-    button_right4['text']=right_side[3]
-    button_right4['state']= disabler(right_side[3], not whos_turn)
+    button_right4['text'] = right_side[3]
+    button_right4['state'] = disabler(right_side[3], not whos_turn)
     button_right5.grid(row=6, column=3, sticky="nsew")
-    button_right5['text']=right_side[4]
-    button_right5['state']= disabler(right_side[4], not whos_turn)
+    button_right5['text'] = right_side[4]
+    button_right5['state'] = disabler(right_side[4], not whos_turn)
     button_right6.grid(row=7, column=3, sticky="nsew")
-    button_right6['text']=right_side[5]
-    button_right6['state']= disabler(right_side[5], not whos_turn)
+    button_right6['text'] = right_side[5]
+    button_right6['state'] = disabler(right_side[5], not whos_turn)
 
-    right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg='light pink')
+    right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg=data['right_score_colour'])
     right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
 
-    left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg='light blue')
+    left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg=data['left_score_colour'])
     left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
 
     winner_label = tkinter.Label(play_screen, text="{}".format(result))
@@ -175,17 +185,20 @@ def draw_buttons():
     play_screen.mainloop()
 
 
-def swap_turn():
+def swap_turn() -> None:
+    """ Swaps the boolean variable to the opposite. """
     global whos_turn
-    if whos_turn:
-        whos_turn = False
-    else:
-        whos_turn = True
+    whos_turn = not whos_turn
+
+
+with open('mancala_data.json') as f:
+    data = json.load(f)
+    print("Loaded json data is: {}".format(data))
 
 result = " "
-right_side = [1, 1, 2, 2, 2, 2]  # pink
+right_side = [4, 4, 4, 4, 4, 4]  # pink
 right_score = 0
-left_side = [1, 1, 2, 2, 1, 1]  # blue
+left_side = [4, 4, 4, 4, 4, 4]  # blue
 left_score = 0
 whos_turn = True    # True means its left side / blues turn
 
@@ -215,25 +228,25 @@ play_screen.rowconfigure(10, weight=1)
 padding_frame = tkinter.Frame(play_screen)
 padding_frame.grid(row=0, column=0)
 
-right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg='light pink')
+right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg=data['right_score_colour'])
 right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
 
-button_left1 = tkinter.Button(play_screen, text=left_side[0], bg='light steel blue', command=lambda id=6: button_press(id))
-button_left2 = tkinter.Button(play_screen, text=left_side[1], bg='light steel blue', command=lambda id=5: button_press(id))
-button_left3 = tkinter.Button(play_screen, text=left_side[2], bg='light steel blue', command=lambda id=4: button_press(id))
-button_left4 = tkinter.Button(play_screen, text=left_side[3], bg='light steel blue', command=lambda id=3: button_press(id))
-button_left5 = tkinter.Button(play_screen, text=left_side[4], bg='light steel blue', command=lambda id=2: button_press(id))
-button_left6 = tkinter.Button(play_screen, text=left_side[5], bg='light steel blue', command=lambda id=1: button_press(id))
+button_left1 = tkinter.Button(play_screen, text=left_side[0], bg=data['left_side_colour'], command=lambda id=6: button_press(id))
+button_left2 = tkinter.Button(play_screen, text=left_side[1], bg=data['left_side_colour'], command=lambda id=5: button_press(id))
+button_left3 = tkinter.Button(play_screen, text=left_side[2], bg=data['left_side_colour'], command=lambda id=4: button_press(id))
+button_left4 = tkinter.Button(play_screen, text=left_side[3], bg=data['left_side_colour'], command=lambda id=3: button_press(id))
+button_left5 = tkinter.Button(play_screen, text=left_side[4], bg=data['left_side_colour'], command=lambda id=2: button_press(id))
+button_left6 = tkinter.Button(play_screen, text=left_side[5], bg=data['left_side_colour'], command=lambda id=1: button_press(id))
 
-left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg='light blue')
+left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg=data['left_score_colour'])
 left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
 
-button_right1 = tkinter.Button(play_screen, text=right_side[0], bg='pink', command=lambda id=1: button_press(id))
-button_right2 = tkinter.Button(play_screen, text=right_side[1], bg='pink', command=lambda id=2: button_press(id))
-button_right3 = tkinter.Button(play_screen, text=right_side[2], bg='pink', command=lambda id=3: button_press(id))
-button_right4 = tkinter.Button(play_screen, text=right_side[3], bg='pink', command=lambda id=4: button_press(id))
-button_right5 = tkinter.Button(play_screen, text=right_side[4], bg='pink', command=lambda id=5: button_press(id))
-button_right6 = tkinter.Button(play_screen, text=right_side[5], bg='pink', command=lambda id=6: button_press(id))
+button_right1 = tkinter.Button(play_screen, text=right_side[0], bg=data['right_side_colour'], command=lambda id=1: button_press(id))
+button_right2 = tkinter.Button(play_screen, text=right_side[1], bg=data['right_side_colour'], command=lambda id=2: button_press(id))
+button_right3 = tkinter.Button(play_screen, text=right_side[2], bg=data['right_side_colour'], command=lambda id=3: button_press(id))
+button_right4 = tkinter.Button(play_screen, text=right_side[3], bg=data['right_side_colour'], command=lambda id=4: button_press(id))
+button_right5 = tkinter.Button(play_screen, text=right_side[4], bg=data['right_side_colour'], command=lambda id=5: button_press(id))
+button_right6 = tkinter.Button(play_screen, text=right_side[5], bg=data['right_side_colour'], command=lambda id=6: button_press(id))
 
 swap_turn()
 draw_buttons()
