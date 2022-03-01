@@ -23,7 +23,7 @@ end_game = False
 end_game, right_counter, left_counter = check_end(right_side, left_side)
 print("-" * 20)
 print("Expected result end_game == True")
-if end_game == True:
+if end_game:
     print("Success")
 else:
     print("Fail")
@@ -38,7 +38,7 @@ end_game = False
 end_game, right_counter, left_counter = check_end(right_side, left_side)
 print("-" * 20)
 print("Expected result end_game == True")
-if end_game == True:
+if end_game:
     print("Success")
 else:
     print("Fail")
