@@ -212,70 +212,71 @@ def swap_turn() -> None:
     whos_turn = not whos_turn
 
 
-with open('mancala_data.json') as f:
-    data = json.load(f)
-    print("Loaded json data is: {}".format(data))
-    # Retrieving data from json file
+if __name__ == "__main__":
+    with open('mancala_data.json') as f:
+        data = json.load(f)
+        print("Loaded json data is: {}".format(data))
+        # Retrieving data from json file
 
-result = " "
-right_side = [4, 4, 4, 4, 4, 4]  # pink
-right_score = 0
-left_side = [4, 4, 4, 4, 4, 4]  # blue
-left_score = 0
-whos_turn = True    # True means its left side / blues turn
+    result = " "
+    right_side = [4, 4, 4, 4, 4, 4]  # pink
+    right_score = 0
+    left_side = [4, 4, 4, 4, 4, 4]  # blue
+    left_score = 0
+    whos_turn = True    # True means its left side / blues turn
 
-play_screen = tkinter.Tk()
+    play_screen = tkinter.Tk()
 
-# Setting up UI with tkinter below using grid format
-# For more info on design and layout see README
+    # Setting up UI with tkinter below using grid format
+    # For more info on design and layout see README
 
-play_screen.title("Mancala")
-play_screen.geometry("500x750")
+    play_screen.title("Mancala")
+    play_screen.geometry("500x750")
 
-play_screen.columnconfigure(0, weight=1)
-play_screen.columnconfigure(1, weight=1)
-play_screen.columnconfigure(2, weight=1)
-play_screen.columnconfigure(3, weight=1)
-play_screen.columnconfigure(4, weight=1)
-play_screen.rowconfigure(0, weight=1)
-play_screen.rowconfigure(1, weight=1)
-play_screen.rowconfigure(2, weight=1)
-play_screen.rowconfigure(3, weight=1)
-play_screen.rowconfigure(4, weight=1)
-play_screen.rowconfigure(5, weight=1)
-play_screen.rowconfigure(6, weight=1)
-play_screen.rowconfigure(7, weight=1)
-play_screen.rowconfigure(8, weight=1)
-play_screen.rowconfigure(9, weight=1)
-play_screen.rowconfigure(10, weight=1)
+    play_screen.columnconfigure(0, weight=1)
+    play_screen.columnconfigure(1, weight=1)
+    play_screen.columnconfigure(2, weight=1)
+    play_screen.columnconfigure(3, weight=1)
+    play_screen.columnconfigure(4, weight=1)
+    play_screen.rowconfigure(0, weight=1)
+    play_screen.rowconfigure(1, weight=1)
+    play_screen.rowconfigure(2, weight=1)
+    play_screen.rowconfigure(3, weight=1)
+    play_screen.rowconfigure(4, weight=1)
+    play_screen.rowconfigure(5, weight=1)
+    play_screen.rowconfigure(6, weight=1)
+    play_screen.rowconfigure(7, weight=1)
+    play_screen.rowconfigure(8, weight=1)
+    play_screen.rowconfigure(9, weight=1)
+    play_screen.rowconfigure(10, weight=1)
 
 
-padding_frame = tkinter.Frame(play_screen)
-padding_frame.grid(row=0, column=0)
+    padding_frame = tkinter.Frame(play_screen)
+    padding_frame.grid(row=0, column=0)
 
-# -- Right score label --
-right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg=data['right_score_colour'])
-right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
+    # -- Right score label --
+    right_score_label = tkinter.Label(play_screen, text="Score: {}".format(right_score), relief="groove", bg=data['right_score_colour'])
+    right_score_label.grid(row=1, column=1, columnspan=3, sticky="nsew")
 
-# -- Left buttons --
-button_left1 = tkinter.Button(play_screen, text=left_side[0], bg=data['left_side_colour'], command=lambda id=6: button_press(id))
-button_left2 = tkinter.Button(play_screen, text=left_side[1], bg=data['left_side_colour'], command=lambda id=5: button_press(id))
-button_left3 = tkinter.Button(play_screen, text=left_side[2], bg=data['left_side_colour'], command=lambda id=4: button_press(id))
-button_left4 = tkinter.Button(play_screen, text=left_side[3], bg=data['left_side_colour'], command=lambda id=3: button_press(id))
-button_left5 = tkinter.Button(play_screen, text=left_side[4], bg=data['left_side_colour'], command=lambda id=2: button_press(id))
-button_left6 = tkinter.Button(play_screen, text=left_side[5], bg=data['left_side_colour'], command=lambda id=1: button_press(id))
+    # -- Left buttons --
+    button_left1 = tkinter.Button(play_screen, text=left_side[0], bg=data['left_side_colour'], command=lambda id=6: button_press(id))
+    button_left2 = tkinter.Button(play_screen, text=left_side[1], bg=data['left_side_colour'], command=lambda id=5: button_press(id))
+    button_left3 = tkinter.Button(play_screen, text=left_side[2], bg=data['left_side_colour'], command=lambda id=4: button_press(id))
+    button_left4 = tkinter.Button(play_screen, text=left_side[3], bg=data['left_side_colour'], command=lambda id=3: button_press(id))
+    button_left5 = tkinter.Button(play_screen, text=left_side[4], bg=data['left_side_colour'], command=lambda id=2: button_press(id))
+    button_left6 = tkinter.Button(play_screen, text=left_side[5], bg=data['left_side_colour'], command=lambda id=1: button_press(id))
 
-# -- Left score label --
-left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg=data['left_score_colour'])
-left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
+    # -- Left score label --
+    left_score_label = tkinter.Label(play_screen, text="Score: {}".format(left_score),  relief="groove", bg=data['left_score_colour'])
+    left_score_label.grid(row=8, column=1, columnspan=3, sticky="nsew")
 
-# -- Right buttons --
-button_right1 = tkinter.Button(play_screen, text=right_side[0], bg=data['right_side_colour'], command=lambda id=1: button_press(id))
-button_right2 = tkinter.Button(play_screen, text=right_side[1], bg=data['right_side_colour'], command=lambda id=2: button_press(id))
-button_right3 = tkinter.Button(play_screen, text=right_side[2], bg=data['right_side_colour'], command=lambda id=3: button_press(id))
-button_right4 = tkinter.Button(play_screen, text=right_side[3], bg=data['right_side_colour'], command=lambda id=4: button_press(id))
-button_right5 = tkinter.Button(play_screen, text=right_side[4], bg=data['right_side_colour'], command=lambda id=5: button_press(id))
-button_right6 = tkinter.Button(play_screen, text=right_side[5], bg=data['right_side_colour'], command=lambda id=6: button_press(id))
+    # -- Right buttons --
+    button_right1 = tkinter.Button(play_screen, text=right_side[0], bg=data['right_side_colour'], command=lambda id=1: button_press(id))
+    button_right2 = tkinter.Button(play_screen, text=right_side[1], bg=data['right_side_colour'], command=lambda id=2: button_press(id))
+    button_right3 = tkinter.Button(play_screen, text=right_side[2], bg=data['right_side_colour'], command=lambda id=3: button_press(id))
+    button_right4 = tkinter.Button(play_screen, text=right_side[3], bg=data['right_side_colour'], command=lambda id=4: button_press(id))
+    button_right5 = tkinter.Button(play_screen, text=right_side[4], bg=data['right_side_colour'], command=lambda id=5: button_press(id))
+    button_right6 = tkinter.Button(play_screen, text=right_side[5], bg=data['right_side_colour'], command=lambda id=6: button_press(id))
 
-swap_turn()
-draw_buttons()
+    swap_turn()
+    draw_buttons()
